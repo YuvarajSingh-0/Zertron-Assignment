@@ -23,5 +23,6 @@ urlpatterns = [
     path('getbooks', views.getBooks),
     path('logout', views.logout),
     path('login', views.login),
-    path('checkAuth', views.checkAuth)
+    path('checkAuth', views.checkAuth),
+    path('register', views.register)
 ]

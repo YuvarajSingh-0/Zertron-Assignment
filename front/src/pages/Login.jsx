@@ -1,10 +1,28 @@
 import axios from "axios";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 
 export default function Login() {
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/checkAuth", {
+                    withCredentials: true,
+                });
+                console.log(res);
+                if (res.data === "Authorized") {
+                    navigate("/dashboard");
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        checkAuth();
+    },[navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,7 +47,7 @@ export default function Login() {
     };
 
     return (
-        <div className="card mx-auto mt-[20%]">
+        <div className="card mx-auto mt-[15%]">
             <h4 className="title text-4xl">Log In!</h4>
             <form onSubmit={handleSubmit}>
                 <div className="field">
@@ -42,6 +60,7 @@ export default function Login() {
                         <path d="M80 192V144C80 64.47 144.5 0 224 0C303.5 0 368 64.47 368 144V192H384C419.3 192 448 220.7 448 256V448C448 483.3 419.3 512 384 512H64C28.65 512 0 483.3 0 448V256C0 220.7 28.65 192 64 192H80zM144 192H304V144C304 99.82 268.2 64 224 64C179.8 64 144 99.82 144 144V192z"></path></svg>
                     <input autocomplete="off" id="logpass" placeholder="Password" className="input-field" name="password" type="password" />
                 </div>
+                <p className="text-sm mt-4">New User? <Link className="text-[#ffeba7] hover:underline" to={'/register'}>Create Account</Link></p>
                 <button className="btn bg-[#ffeba7]" type="submit">Login</button>
             </form>
         </div>

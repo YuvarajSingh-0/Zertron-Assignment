@@ -60,6 +60,7 @@ export default function Dashboard() {
         }
     }
 
+
     useEffect(() => {
         async function getBooks() {
             const res = await axios.get("http://127.0.0.1:8000/getbooks", { withCredentials: true })
@@ -67,11 +68,6 @@ export default function Dashboard() {
             console.log(data);
             setBooks(data.books);
         }
-        getBooks();
-    }, []);
-
-
-    useEffect(() => {
         async function checkAuth() {
             const res = await axios.get("http://127.0.0.1:8000/checkAuth", { withCredentials: true })
             const data = res.data;
@@ -80,6 +76,7 @@ export default function Dashboard() {
             if (data == 'Unauthorized') {
                 return navigate("/");
             }
+            await getBooks();
             setLoading(false);
             return;
         }
@@ -108,7 +105,9 @@ export default function Dashboard() {
                         <BookCard book={book} key={book.bookId} />
                     ))}
                 </div>
-                <button onClick={handleLogout}>Logout</button>
+                <div className="flex" >
+                    <button className="mx-auto px-6 py-3 border border-gray-500 hover:bg-gray-700 rounded-lg" onClick={handleLogout}>Logout</button>
+                </div>
             </div>
     );
 }
